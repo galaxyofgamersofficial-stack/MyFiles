@@ -15,6 +15,7 @@
             --mc-accent-blue: #1e90ff;
             --mc-diamond: #4afafa;
             --mc-dark: #020c1b;
+            --mc-brown: #8B4513;
         }
         
         * {
@@ -25,23 +26,201 @@
         
         body {
             font-family: 'Minecraft', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--mc-deep-blue);
             color: var(--mc-light-blue);
             overflow-x: hidden;
             line-height: 1.6;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
-        
+
+        body.loaded {
+            opacity: 1;
+        }
+
         @font-face {
             font-family: 'Minecraft';
             src: url('https://fonts.cdnfonts.com/css/minecraft-4');
         }
+
+        /* Particle Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-color: var(--mc-deep-blue);
+        }
+
+        /* Main Content */
+        #main-content {
+            display: none;
+            position: relative;
+            z-index: 1;
+        }
         
-        /* Updated Music Player Styles */
-        .music-player {
+        /* Improved Intro Screen */
+        #intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            cursor: pointer;
+            background: radial-gradient(circle at center, var(--mc-deep-blue) 0%, var(--mc-dark) 100%);
+            transition: opacity 1s ease;
+        }
+
+        .intro-container {
+            text-align: center;
+            position: relative;
+            padding: 40px;
+            border-radius: 20px;
+            background: rgba(10, 25, 47, 0.7);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--mc-bright-blue);
+            box-shadow: 0 0 40px rgba(100, 255, 218, 0.3);
+            max-width: 600px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        
+        .intro-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                transparent,
+                transparent,
+                transparent,
+                var(--mc-bright-blue),
+                transparent,
+                transparent,
+                transparent
+            );
+            transform: rotate(30deg);
+            animation: shine 3s infinite;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        #intro-screen h1 {
+            font-size: 4rem;
+            margin-bottom: 30px;
+            background: linear-gradient(to right, var(--mc-light-blue), var(--mc-diamond));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+        }
+        
+        #intro-screen h1::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--mc-bright-blue);
+            border-radius: 2px;
+            box-shadow: 0 0 15px var(--mc-bright-blue);
+        }
+        
+        .enter-prompt {
+            margin-top: 40px;
+            position: relative;
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 50px;
+            background: rgba(100, 255, 218, 0.1);
+            border: 2px solid var(--mc-bright-blue);
+            color: var(--mc-bright-blue);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(100, 255, 218, 0.2);
+            animation: pulse 2s infinite;
+        }
+        
+        .enter-prompt:hover {
+            background: rgba(100, 255, 218, 0.2);
+            box-shadow: 0 0 30px rgba(100, 255, 218, 0.4);
+            transform: translateY(-3px);
+        }
+        
+        .enter-prompt::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(100, 255, 218, 0.2),
+                transparent
+            );
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        
+        .enter-prompt:hover::after {
+            transform: translateX(100%);
+        }
+        
+        .particle-orb {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(100, 255, 218, 0.1) 0%, transparent 70%);
+            filter: blur(20px);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .particle-orb:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .particle-orb:nth-child(2) {
+            bottom: 15%;
+            right: 10%;
+            animation-delay: 2s;
+            width: 200px;
+            height: 200px;
+        }
+
+        /* Improved Music Player Styles */
+        .music-player-container {
             position: fixed;
             top: 20px;
             left: 20px;
             z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .music-player {
             width: 50px;
             height: 50px;
             background: linear-gradient(135deg, var(--mc-bright-blue), var(--mc-diamond));
@@ -54,6 +233,7 @@
             transition: all 0.3s ease;
             opacity: 0;
             transform: translateY(-20px);
+            will-change: transform, opacity;
         }
         
         .music-player.show {
@@ -83,19 +263,29 @@
             transition: width 0.1s linear;
         }
 
+        .volume-control-container {
+            overflow: hidden;
+            width: 0;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            transition: width 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .music-player-container:hover .volume-control-container {
+            width: 120px;
+            opacity: 1;
+        }
+
         .volume-control {
-            position: absolute;
-            left: 60px;
             width: 100px;
             height: 5px;
             background: var(--mc-medium-blue);
             border-radius: 5px;
-            display: none;
             cursor: pointer;
-        }
-
-        .volume-control.active {
-            display: block;
+            flex-shrink: 0;
+            position: relative;
         }
 
         .volume-level {
@@ -104,17 +294,19 @@
             background: var(--mc-bright-blue);
             border-radius: 5px;
             pointer-events: none;
+            transition: width 0.2s ease;
+            position: relative;
         }
 
-        /* [Rest of your existing CSS remains exactly the same] */
-        /* Particle Background */
-        #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            top: 0;
+        .volume-control::after {
+            content: '';
+            position: absolute;
+            top: -5px;
             left: 0;
+            width: 100%;
+            height: 15px;
+            cursor: pointer;
+            z-index: 2;
         }
         
         /* Main Container */
@@ -126,9 +318,10 @@
             z-index: 1;
         }
         
-        /* Header Styles */
+        /* Header Styles with more space */
         header {
-            height: 100vh;
+            padding-top: 100px;
+            margin-top: 40px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -153,6 +346,7 @@
             overflow: hidden;
             box-shadow: 0 0 30px var(--mc-bright-blue);
             transition: all 0.5s ease;
+            will-change: transform;
         }
         
         .pixel-portrait img {
@@ -234,6 +428,7 @@
             position: relative;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            will-change: transform;
         }
         
         .nav-block i {
@@ -280,7 +475,15 @@
             position: relative;
         }
         
-        /* Attractive Animated Section Titles */
+        #skills {
+            background-color: var(--mc-dark);
+        }
+        
+        #contact {
+            background-color: var(--mc-dark);
+        }
+        
+        /* Section Titles */
         .section-title {
             text-align: center;
             font-size: 3rem;
@@ -350,7 +553,6 @@
             100% { transform: translateX(-50%) scale(1); }
         }
         
-        /* Animation when scrolling into view */
         .section-title.in-view::after {
             width: 80%;
             background: linear-gradient(90deg, 
@@ -386,6 +588,7 @@
             z-index: 1;
             transform: translateY(50px);
             opacity: 0;
+            will-change: transform, opacity;
         }
         
         .skill-block.animate {
@@ -425,6 +628,7 @@
             margin-bottom: 20px;
             color: var(--mc-bright-blue);
             transition: all 0.3s ease;
+            will-change: transform;
         }
         
         .skill-block:hover .skill-icon {
@@ -499,6 +703,7 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             transform: scale(0.95);
             opacity: 0;
+            will-change: transform, opacity;
         }
         
         .project-card.animate {
@@ -521,6 +726,7 @@
             background-position: center;
             position: relative;
             transition: all 0.5s ease;
+            will-change: transform;
         }
         
         .project-card:hover .project-image {
@@ -595,6 +801,7 @@
             border-radius: 20px;
             font-size: 0.8rem;
             transition: all 0.3s ease;
+            will-change: transform;
         }
         
         .project-card:hover .tech-item {
@@ -642,6 +849,7 @@
             transform: perspective(1000px) rotateX(10deg) translateY(50px);
             opacity: 0;
             transition: all 0.8s ease;
+            will-change: transform, opacity;
         }
         
         .contact-container.animate {
@@ -732,6 +940,7 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 5px 15px rgba(30, 144, 255, 0.4);
+            will-change: transform;
         }
         
         .mc-button:hover {
@@ -774,6 +983,7 @@
             transition: all 0.3s ease;
             transform: translateY(20px);
             opacity: 0;
+            will-change: transform, opacity;
         }
         
         .social-link.animate {
@@ -823,6 +1033,7 @@
             visibility: hidden;
             box-shadow: 0 5px 15px rgba(100, 255, 218, 0.4);
             z-index: 99;
+            will-change: transform;
         }
         
         .back-to-top.active {
@@ -856,7 +1067,7 @@
             animation: pulse 3s ease infinite;
         }
         
-        /* Responsive */
+        /* Responsive Styles */
         @media (max-width: 1200px) {
             .container {
                 padding: 0 30px;
@@ -878,6 +1089,22 @@
             
             .project-grid {
                 grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+
+            /* About Section Responsive Fixes */
+            .about-content .grid-container {
+                grid-template-columns: 1fr !important;
+                gap: 30px !important;
+            }
+            
+            .about-content .animate__animated {
+                animation: none !important;
+                opacity: 1 !important;
+                transform: none !important;
+            }
+            
+            .about-content .mc-button {
+                margin-bottom: 20px;
             }
         }
         
@@ -907,6 +1134,46 @@
             .contact-container {
                 padding: 30px;
             }
+            
+            /* Intro screen adjustments */
+            #intro-screen h1 {
+                font-size: 2.5rem;
+            }
+            
+            .intro-container {
+                padding: 20px;
+                margin: 0 20px;
+            }
+            
+            .enter-prompt {
+                font-size: 1rem;
+                padding: 12px 24px;
+            }
+
+            /* Music player adjustments */
+            .music-player-container:hover .volume-control-container {
+                width: 80px;
+            }
+
+            .volume-control {
+                width: 80px;
+            }
+
+            /* About Section Responsive Fixes */
+            .about-content .grid-container {
+                padding: 0 20px;
+            }
+            
+            .about-content .animate__fadeInRight div {
+                position: relative;
+            }
+            
+            .about-content .animate__fadeInRight div > div {
+                right: -10px !important;
+                top: -10px !important;
+                width: 80px !important;
+                height: 80px !important;
+            }
         }
         
         @media (max-width: 576px) {
@@ -933,468 +1200,503 @@
             .contact-container {
                 padding: 20px;
             }
+
+            /* Music player adjustments */
+            .music-player-container {
+                left: 10px;
+            }
+
+            .music-player-container:hover .volume-control-container {
+                width: 60px;
+            }
+
+            .volume-control {
+                width: 60px;
+            }
+
+            /* About Section Responsive Fixes */
+            .about-content h3 {
+                font-size: 1.5rem !important;
+            }
+            
+            .about-content p {
+                font-size: 1rem !important;
+            }
+            
+            .about-content ul li {
+                padding-left: 25px !important;
+                margin-bottom: 10px !important;
+            }
+            
+            .about-content .mc-button {
+                width: 100%;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Particle Background -->
     <div id="particles-js"></div>
-    
-    <!-- Audio Element with your Google Drive music -->
-    <audio id="backgroundMusic" loop>
-        <!-- Converted Google Drive link to direct download -->
-        <source src="music.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-    
-    <!-- Compact Music Player -->
-    <div class="music-player" id="musicPlayer">
-        <i class="fas fa-pause" id="musicIcon"></i>
-        <div class="volume-control" id="volumeControl">
-            <div class="volume-level" id="volumeLevel"></div>
+
+    <!-- Improved Intro Screen -->
+    <div id="intro-screen">
+        <div class="particle-orb"></div>
+        <div class="particle-orb"></div>
+        
+        <div class="intro-container animate__animated animate__fadeIn">
+            <h1 class="animate__animated animate__fadeInDown">MINECRAFT DEVELOPER</h1>
+            <p class="animate__animated animate__fadeIn animate__delay-1s" style="font-size: 1.3rem; margin-bottom: 20px;">
+                Crafting extraordinary server experiences & stunning websites
+            </p>
+            <div class="animate__animated animate__fadeIn animate__delay-1-5s">
+                <div class="enter-prompt" id="enterButton">
+                    Click Anywhere to Enter
+                    <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>
+                </div>
+            </div>
         </div>
     </div>
-    
-    <header>
-        <div class="container">
-            <div class="hero-content">
-                <div class="pixel-portrait floating">
-                    <!-- Using img tag instead of background-image -->
-                    <img src="https://i.imgur.com/22e1ef161e2562d7f28498647bc4d576.png" alt="Minecraft Developer Avatar">
-                </div>
-                <h1 class="animate__animated animate__fadeInDown">MINECRAFT DEV</h1>
-                <p class="tagline animate__animated animate__fadeIn animate__delay-1s">Crafting extraordinary server experiences & stunning websites</p>
-                
-                <div class="nav-blocks">
-                    <div class="nav-block animate__animated animate__fadeInUp animate__delay-1s" data-section="about">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="nav-block animate__animated animate__fadeInUp animate__delay-1-2s" data-section="skills">
-                        <i class="fas fa-cogs"></i>
-                    </div>
-                    <div class="nav-block animate__animated animate__fadeInUp animate__delay-1-4s" data-section="projects">
-                        <i class="fas fa-project-diagram"></i>
-                    </div>
-                    <div class="nav-block animate__animated animate__fadeInUp animate__delay-1-6s" data-section="contact">
-                        <i class="fas fa-envelope"></i>
-                    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <!-- Audio Element -->
+        <audio id="backgroundMusic" loop>
+            <source src="https://github.com/galaxyofgamersofficial-stack/audiofiles/raw/refs/heads/main/music.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        
+        <!-- Improved Music Player with Volume Control -->
+        <div class="music-player-container">
+            <div class="music-player" id="musicPlayer">
+                <i class="fas fa-pause" id="musicIcon"></i>
+            </div>
+            <div class="volume-control-container">
+                <div class="volume-control" id="volumeControl">
+                    <div class="volume-level" id="volumeLevel"></div>
                 </div>
             </div>
-        </div>
-    </header>
-    
-    <section id="about">
-        <div class="container">
-            <h2 class="section-title animate__animated">About Me</h2>
-            <div class="about-content">
-                <div class="grid-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
-                    <div class="animate__animated animate__fadeInLeft">
-                        <h3 style="font-size: 2rem; margin-bottom: 20px; color: var(--mc-bright-blue);">Who I Am</h3>
-                        <p style="margin-bottom: 20px; font-size: 1.1rem;">
-                            I'm a passionate Minecraft server and plugin developer with over 5 years of experience creating custom gameplay experiences. 
-                            My expertise ranges from small quality-of-life plugins to complex minigame systems with custom mechanics.
-                        </p>
-                        <p style="margin-bottom: 20px; font-size: 1.1rem;">
-                            When I'm not coding plugins, I develop beautiful, functional WordPress websites tailored for the Minecraft community - 
-                            from server landing pages to full-featured gaming portals.
-                        </p>
-                        <div class="mc-button pulse" style="display: inline-block; margin-top: 20px;">
-                            Download CV <i class="fas fa-download" style="margin-left: 10px;"></i>
-                        </div>
-                    </div>
-                    <div class="animate__animated animate__fadeInRight" style="position: relative;">
-                        <div style="background-color: var(--mc-medium-blue); padding: 30px; border-radius: 15px; border-left: 5px solid var(--mc-bright-blue);">
-                            <h3 style="font-size: 1.5rem; margin-bottom: 20px; color: var(--mc-bright-blue);">My Specialties</h3>
-                            <ul style="list-style-type: none;">
-                                <li style="margin-bottom: 15px; position: relative; padding-left: 30px;">
-                                    <i class="fas fa-check" style="color: var(--mc-bright-blue); position: absolute; left: 0; top: 5px;"></i>
-                                    Custom Minecraft Plugin Development
-                                </li>
-                                <li style="margin-bottom: 15px; position: relative; padding-left: 30px;">
-                                    <i class="fas fa-check" style="color: var(--mc-bright-blue); position: absolute; left: 0; top: 5px;"></i>
-                                    Server Optimization & Configuration
-                                </li>
-                                <li style="margin-bottom: 15px; position: relative; padding-left: 30px;">
-                                    <i class="fas fa-check" style="color: var(--mc-bright-blue); position: absolute; left: 0; top: 5px;"></i>
-                                    WordPress Development with Minecraft Integration
-                                </li>
-                                <li style="margin-bottom: 15px; position: relative; padding-left: 30px;">
-                                    <i class="fas fa-check" style="color: var(--mc-bright-blue); position: absolute; left: 0; top: 5px;"></i>
-                                    Custom Minigame Systems
-                                </li>
-                                <li style="margin-bottom: 15px; position: relative; padding-left: 30px;">
-                                    <i class="fas fa-check" style="color: var(--mc-bright-blue); position: absolute; left: 0; top: 5px;"></i>
-                                    Database Design & Management
-                                </li>
-                            </ul>
-                        </div>
-                        <div style="position: absolute; top: -20px; right: -20px; width: 100px; height: 100px; background-color: var(--mc-bright-blue); border-radius: 50%; z-index: -1; opacity: 0.2;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <section id="skills" style="background-color: var(--mc-dark);">
-        <div class="container">
-            <h2 class="section-title animate__animated">My Skills</h2>
-            <div class="skills-container">
-                <div class="skill-block">
-                    <div class="skill-icon">
-                        <i class="fab fa-java"></i>
-                    </div>
-                    <h3>Minecraft Plugin Dev</h3>
-                    <div class="skill-bar-container">
-                        <div class="skill-info">
-                            <span class="skill-name">Java/Spigot</span>
-                            <span class="skill-percent">95%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="95%"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="skill-block">
-                    <div class="skill-icon">
-                        <i class="fas fa-server"></i>
-                    </div>
-                    <h3>Server Configuration</h3>
-                    <div class="skill-bar-container">
-                        <div class="skill-info">
-                            <span class="skill-name">Optimization</span>
-                            <span class="skill-percent">90%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="90%"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="skill-block">
-                    <div class="skill-icon">
-                        <i class="fab fa-wordpress"></i>
-                    </div>
-                    <h3>WordPress Development</h3>
-                    <div class="skill-bar-container">
-                        <div class="skill-info">
-                            <span class="skill-name">Themes/Plugins</span>
-                            <span class="skill-percent">85%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="85%"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="skill-block">
-                    <div class="skill-icon">
-                        <i class="fas fa-database"></i>
-                    </div>
-                    <h3>Database Management</h3>
-                    <div class="skill-bar-container">
-                        <div class="skill-info">
-                            <span class="skill-name">MySQL/MongoDB</span>
-                            <span class="skill-percent">80%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="80%"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="skill-block">
-                    <div class="skill-icon">
-                        <i class="fas fa-gamepad"></i>
-                    </div>
-                    <h3>Minigame Development</h3>
-                    <div class="skill-bar-container">
-                        <div class="skill-info">
-                            <span class="skill-name">Custom Games</span>
-                            <span class="skill-percent">88%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="88%"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="skill-block">
-                    <div class="skill-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <h3>Web Development</h3>
-                    <div class="skill-bar-container">
-                        <div class="skill-info">
-                            <span class="skill-name">HTML/CSS/JS</span>
-                            <span class="skill-percent">83%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="83%"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <section id="projects">
-        <div class="container">
-            <h2 class="section-title animate__animated">Featured Projects</h2>
-            <div class="project-grid">
-                <div class="project-card">
-                    <div class="project-image" style="background-image: url('https://via.placeholder.com/600x400?text=Survival+Games+Plugin');">
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Survival Games Plugin</h3>
-                        <p class="project-description">
-                            A custom Hunger Games style plugin with unique classes, abilities, and a spectator system. 
-                            Features MySQL statistics tracking and arena configuration via GUI.
-                        </p>
-                        <div class="project-tech">
-                            <span class="tech-item">Java</span>
-                            <span class="tech-item">Spigot</span>
-                            <span class="tech-item">MySQL</span>
-                            <span class="tech-item">GUI</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" class="project-link">
-                                <i class="fas fa-external-link-alt"></i> Live Demo
-                            </a>
-                            <a href="#" class="project-link">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="project-card">
-                    <div class="project-image" style="background-image: url('https://via.placeholder.com/600x400?text=Minecraft+Server+Website');">
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Minecraft Server Website</h3>
-                        <p class="project-description">
-                            A custom WordPress theme with server status widget, player statistics, 
-                            and store integration. Features a custom plugin for live data display.
-                        </p>
-                        <div class="project-tech">
-                            <span class="tech-item">WordPress</span>
-                            <span class="tech-item">PHP</span>
-                            <span class="tech-item">JavaScript</span>
-                            <span class="tech-item">REST API</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" class="project-link">
-                                <i class="fas fa-external-link-alt"></i> Visit Site
-                            </a>
-                            <a href="#" class="project-link">
-                                <i class="fas fa-code"></i> View Code
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="project-card">
-                    <div class="project-image" style="background-image: url('https://via.placeholder.com/600x400?text=Custom+Economy+System');">
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Custom Economy System</h3>
-                        <p class="project-description">
-                            Advanced economy plugin with MySQL support, custom currencies, 
-                            shops, auctions, and admin tools. Handles 1000+ transactions per minute.
-                        </p>
-                        <div class="project-tech">
-                            <span class="tech-item">Java</span>
-                            <span class="tech-item">MySQL</span>
-                            <span class="tech-item">Multi-threading</span>
-                            <span class="tech-item">GUI</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" class="project-link">
-                                <i class="fas fa-external-link-alt"></i> Documentation
-                            </a>
-                            <a href="#" class="project-link">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <section id="contact" style="background-color: var(--mc-dark);">
-        <div class="container">
-            <h2 class="section-title animate__animated">Get In Touch</h2>
-            <div class="contact-container">
-                <form class="mc-form">
-                    <div class="form-group">
-                        <label for="name" class="form-label">Your Name</label>
-                        <input type="text" id="name" class="mc-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email" class="form-label">Your Email</label>
-                        <input type="email" id="email" class="mc-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="subject" class="form-label">Subject</label>
-                        <input type="text" id="subject" class="mc-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message" class="form-label">Message</label>
-                        <textarea id="message" class="mc-input" required></textarea>
-                    </div>
-                    <button type="submit" class="mc-button">
-                        Send Message <i class="fas fa-paper-plane" style="margin-left: 10px;"></i>
-                    </button>
-                </form>
-            </div>
-            
-            <div class="social-links">
-                <a href="#" class="social-link">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="#" class="social-link">
-                    <i class="fab fa-discord"></i>
-                </a>
-                <a href="#" class="social-link">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a href="#" class="social-link">
-                    <i class="fab fa-linkedin-in"></i>
-                </a>
-                <a href="#" class="social-link">
-                    <i class="fab fa-spigot"></i>
-                </a>
-            </div>
-        </div>
-    </section>
-    
-    <footer>
-        <div class="container">
-            <p class="footer-text">© <span id="year"></span> Minecraft Developer Portfolio. All rights reserved.</p>
-            <p>Crafted with <i class="fas fa-heart" style="color: var(--mc-bright-blue);"></i> and <i class="fas fa-coffee" style="color: var(--mc-brown);"></i></p>
         </div>
         
-        <div class="back-to-top">
-            <i class="fas fa-arrow-up"></i>
-        </div>
-    </footer>
+        <header>
+            <div class="container">
+                <div class="hero-content">
+                    <div class="pixel-portrait floating">
+                        <img src="https://media.discordapp.net/attachments/1302911430126993408/1405525244411645982/22e1ef161e2562d7f28498647bc4d576.png?ex=689fcda3&is=689e7c23&hm=85d05d857f5a744e558ff24b7ac978c94835a67f625fa4e3f534cb746627922f&=&format=webp&quality=lossless" alt="Minecraft Developer Avatar">
+                    </div>
+                    <h1 class="animate__animated animate__fadeInDown">MINECRAFT DEV</h1>
+                    <p class="tagline animate__animated animate__fadeIn animate__delay-1s">Crafting extraordinary server experiences & stunning websites</p>
+                    
+                    <div class="nav-blocks">
+                        <div class="nav-block animate__animated animate__fadeInUp animate__delay-1s" data-section="about">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="nav-block animate__animated animate__fadeInUp animate__delay-1-2s" data-section="skills">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <div class="nav-block animate__animated animate__fadeInUp animate__delay-1-4s" data-section="projects">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <div class="nav-block animate__animated animate__fadeInUp animate__delay-1-6s" data-section="contact">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <section id="about">
+            <div class="container">
+                <h2 class="section-title animate__animated">About Me</h2>
+                <div class="about-content">
+                    <div class="grid-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
+                        <div class="animate__animated animate__fadeInLeft">
+                            <h3 style="font-size: 2rem; margin-bottom: 20px; color: var(--mc-bright-blue);">Who I Am</h3>
+                            <p style="margin-bottom: 20px; font-size: 1.1rem;">
+                                I'm a passionate Minecraft server and plugin developer with over 5 years of experience creating custom gameplay experiences. 
+                                My expertise ranges from small quality-of-life plugins to complex minigame systems with custom mechanics.
+                            </p>
+                            <p style="margin-bottom: 20px; font-size: 1.1rem;">
+                                When I'm not coding plugins, I develop beautiful, functional WordPress websites tailored for the Minecraft community - 
+                                from server landing pages to full-featured gaming portals.
+                            </p>
+                            <div class="mc-button pulse" style="display: inline-block; margin-top: 20px;">
+                                Download CV <i class="fas fa-download" style="margin-left: 10px;"></i>
+                            </div>
+                        </div>
+                        <div class="animate__animated animate__fadeInRight" style="position: relative;">
+                            <div style="background-color: var(--mc-medium-blue); padding: 30px; border-radius: 15px; border-left: 5px solid var(--mc-bright-blue);">
+                                <h3 style="font-size: 1.5rem; margin-bottom: 20px; color: var(--mc-bright-blue);">My Specialties</h3>
+                                <ul style="list-style-type: none;">
+                                    <li style="margin-bottom: 15px; position: relative; padding-left: 30px;">
+                                        <i class="fas fa-check" style="color: var(--mc-bright-blue); position: absolute; left: 0; top: 5px;"></i>
+                                        Custom Minecraft Plugin Development
+                                    </li>
+                                    <li style="margin-bottom: 15px; position: relative; padding-left: 30px;">
+                                        <i class="fas fa-check" style="color: var(--mc-bright-blue); position: absolute; left: 0; top: 5px;"></i>
+                                        Server Optimization & Configuration
+                                    </li>
+                                    <li style="margin-bottom: 15px; position: relative; padding-left: 30px;">
+                                        <i class="fas fa-check" style="color: var(--mc-bright-blue); position: absolute; left: 0; top: 5px;"></i>
+                                        WordPress Development with Minecraft Integration
+                                    </li>
+                                    <li style="margin-bottom: 15px; position: relative; padding-left: 30px;">
+                                        <i class="fas fa-check" style="color: var(--mc-bright-blue); position: absolute; left: 0; top: 5px;"></i>
+                                        Custom Minigame Systems
+                                    </li>
+                                    <li style="margin-bottom: 15px; position: relative; padding-left: 30px;">
+                                        <i class="fas fa-check" style="color: var(--mc-bright-blue); position: absolute; left: 0; top: 5px;"></i>
+                                        Database Design & Management
+                                    </li>
+                                </ul>
+                            </div>
+                            <div style="position: absolute; top: -20px; right: -20px; width: 100px; height: 100px; background-color: var(--mc-bright-blue); border-radius: 50%; z-index: -1; opacity: 0.2;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="skills">
+            <div class="container">
+                <h2 class="section-title animate__animated">My Skills</h2>
+                <div class="skills-container">
+                    <div class="skill-block">
+                        <div class="skill-icon">
+                            <i class="fab fa-java"></i>
+                        </div>
+                        <h3>Minecraft Plugin Dev</h3>
+                        <div class="skill-bar-container">
+                            <div class="skill-info">
+                                <span class="skill-name">Java/Spigot</span>
+                                <span class="skill-percent">95%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="95%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-block">
+                        <div class="skill-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <h3>Server Configuration</h3>
+                        <div class="skill-bar-container">
+                            <div class="skill-info">
+                                <span class="skill-name">Optimization</span>
+                                <span class="skill-percent">90%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="90%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-block">
+                        <div class="skill-icon">
+                            <i class="fab fa-wordpress"></i>
+                        </div>
+                        <h3>WordPress Development</h3>
+                        <div class="skill-bar-container">
+                            <div class="skill-info">
+                                <span class="skill-name">Themes/Plugins</span>
+                                <span class="skill-percent">85%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-block">
+                        <div class="skill-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3>Database Management</h3>
+                        <div class="skill-bar-container">
+                            <div class="skill-info">
+                                <span class="skill-name">MySQL/MongoDB</span>
+                                <span class="skill-percent">80%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-block">
+                        <div class="skill-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <h3>Minigame Development</h3>
+                        <div class="skill-bar-container">
+                            <div class="skill-info">
+                                <span class="skill-name">Custom Games</span>
+                                <span class="skill-percent">88%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="88%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-block">
+                        <div class="skill-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3>Web Development</h3>
+                        <div class="skill-bar-container">
+                            <div class="skill-info">
+                                <span class="skill-name">HTML/CSS/JS</span>
+                                <span class="skill-percent">83%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="83%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="projects">
+            <div class="container">
+                <h2 class="section-title animate__animated">Featured Projects</h2>
+                <div class="project-grid">
+                    <div class="project-card">
+                        <div class="project-image" style="background-image: url('https://via.placeholder.com/600x400?text=Survival+Games+Plugin');">
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Survival Games Plugin</h3>
+                            <p class="project-description">
+                                A custom Hunger Games style plugin with unique classes, abilities, and a spectator system. 
+                                Features MySQL statistics tracking and arena configuration via GUI.
+                            </p>
+                            <div class="project-tech">
+                                <span class="tech-item">Java</span>
+                                <span class="tech-item">Spigot</span>
+                                <span class="tech-item">MySQL</span>
+                                <span class="tech-item">GUI</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i> Live Demo
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-image" style="background-image: url('https://via.placeholder.com/600x400?text=Minecraft+Server+Website');">
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Minecraft Server Website</h3>
+                            <p class="project-description">
+                                A custom WordPress theme with server status widget, player statistics, 
+                                and store integration. Features a custom plugin for live data display.
+                            </p>
+                            <div class="project-tech">
+                                <span class="tech-item">WordPress</span>
+                                <span class="tech-item">PHP</span>
+                                <span class="tech-item">JavaScript</span>
+                                <span class="tech-item">REST API</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i> Visit Site
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fas fa-code"></i> View Code
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-image" style="background-image: url('https://via.placeholder.com/600x400?text=Custom+Economy+System');">
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Custom Economy System</h3>
+                            <p class="project-description">
+                                Advanced economy plugin with MySQL support, custom currencies, 
+                                shops, auctions, and admin tools. Handles 1000+ transactions per minute.
+                            </p>
+                            <div class="project-tech">
+                                <span class="tech-item">Java</span>
+                                <span class="tech-item">MySQL</span>
+                                <span class="tech-item">Multi-threading</span>
+                                <span class="tech-item">GUI</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i> Documentation
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="contact">
+            <div class="container">
+                <h2 class="section-title animate__animated">Get In Touch</h2>
+                <div class="contact-container">
+                    <form class="mc-form">
+                        <div class="form-group">
+                            <label for="name" class="form-label">Your Name</label>
+                            <input type="text" id="name" class="mc-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="form-label">Your Email</label>
+                            <input type="email" id="email" class="mc-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject" class="form-label">Subject</label>
+                            <input type="text" id="subject" class="mc-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea id="message" class="mc-input" required></textarea>
+                        </div>
+                        <button type="submit" class="mc-button">
+                            Send Message <i class="fas fa-paper-plane" style="margin-left: 10px;"></i>
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="social-links">
+                    <a href="#" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-discord"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-spigot"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <footer>
+            <div class="container">
+                <p class="footer-text">© <span id="year"></span> Minecraft Developer Portfolio. All rights reserved.</p>
+                <p>Crafted with <i class="fas fa-heart" style="color: var(--mc-bright-blue);"></i> and <i class="fas fa-coffee" style="color: var(--mc-brown);"></i></p>
+            </div>
+            
+            <div class="back-to-top">
+                <i class="fas fa-arrow-up"></i>
+            </div>
+        </footer>
+    </div>
     
     <!-- Particles.js -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     
     <script>
-        // JavaScript for enhanced animations and interactivity
         document.addEventListener('DOMContentLoaded', function() {
-            // Set current year in footer
-            document.getElementById('year').textContent = new Date().getFullYear();
+            // Initialize particles immediately
+            initParticles();
             
-            // Initialize particles.js
-            particlesJS('particles-js', {
-                particles: {
-                    number: {
-                        value: 80,
-                        density: {
-                            enable: true,
-                            value_area: 800
-                        }
-                    },
-                    color: {
-                        value: "#64ffda"
-                    },
-                    shape: {
-                        type: "circle",
-                        stroke: {
-                            width: 0,
-                            color: "#000000"
-                        },
-                        polygon: {
-                            nb_sides: 5
-                        }
-                    },
-                    opacity: {
-                        value: 0.5,
-                        random: true,
-                        anim: {
-                            enable: true,
-                            speed: 1,
-                            opacity_min: 0.1,
-                            sync: false
-                        }
-                    },
-                    size: {
-                        value: 3,
-                        random: true,
-                        anim: {
-                            enable: true,
-                            speed: 2,
-                            size_min: 0.1,
-                            sync: false
-                        }
-                    },
-                    line_linked: {
-                        enable: true,
-                        distance: 150,
-                        color: "#64ffda",
-                        opacity: 0.2,
-                        width: 1
-                    },
-                    move: {
-                        enable: true,
-                        speed: 1,
-                        direction: "none",
-                        random: true,
-                        straight: false,
-                        out_mode: "out",
-                        bounce: false,
-                        attract: {
-                            enable: true,
-                            rotateX: 600,
-                            rotateY: 1200
-                        }
-                    }
-                },
-                interactivity: {
-                    detect_on: "canvas",
-                    events: {
-                        onhover: {
-                            enable: true,
-                            mode: "grab"
-                        },
-                        onclick: {
-                            enable: true,
-                            mode: "push"
-                        },
-                        resize: true
-                    },
-                    modes: {
-                        grab: {
-                            distance: 140,
-                            line_linked: {
-                                opacity: 0.5
-                            }
-                        },
-                        push: {
-                            particles_nb: 4
-                        }
-                    }
-                },
-                retina_detect: true
-            });
-            
-            // Audio Player Functionality
+            // Show page content
+            document.body.classList.add('loaded');
+
+            const introScreen = document.getElementById('intro-screen');
+            const mainContent = document.getElementById('main-content');
             const musicPlayer = document.getElementById('musicPlayer');
             const musicIcon = document.getElementById('musicIcon');
             const backgroundMusic = document.getElementById('backgroundMusic');
             const volumeControl = document.getElementById('volumeControl');
             const volumeLevel = document.getElementById('volumeLevel');
+            const enterButton = document.getElementById('enterButton');
             let musicPlaying = false;
             let progressInterval;
+            let isDraggingVolume = false;
 
+            // Set current year in footer
+            document.getElementById('year').textContent = new Date().getFullYear();
+            
             // Set initial volume (0.5 is 50%)
             backgroundMusic.volume = 0.5;
             volumeLevel.style.width = '50%';
+
+            // Volume control with drag functionality
+            function updateVolume(e) {
+                const rect = volumeControl.getBoundingClientRect();
+                let percentage = (e.clientX - rect.left) / rect.width;
+                percentage = Math.min(1, Math.max(0, percentage));
+                backgroundMusic.volume = percentage;
+                volumeLevel.style.width = `${percentage * 100}%`;
+            }
+            
+            volumeControl.addEventListener('mousedown', (e) => {
+                isDraggingVolume = true;
+                updateVolume(e);
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (isDraggingVolume) {
+                    updateVolume(e);
+                }
+            });
+            
+            document.addEventListener('mouseup', () => {
+                isDraggingVolume = false;
+            });
+            
+            // Still keep the click functionality
+            volumeControl.addEventListener('click', (e) => {
+                if (!isDraggingVolume) { // Only if not already dragging
+                    updateVolume(e);
+                }
+            });
+
+            // Handle intro screen click
+            introScreen.addEventListener('click', function() {
+                // Add click animation
+                enterButton.classList.add('animate__animated', 'animate__pulse');
+                enterButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entering...';
+                
+                // Start playing music
+                backgroundMusic.play()
+                    .then(() => {
+                        musicPlaying = true;
+                        musicIcon.classList.remove('fa-play');
+                        musicIcon.classList.add('fa-pause');
+                    })
+                    .catch(error => {
+                        console.log("Playback error:", error);
+                    });
+
+                // Fade out intro screen
+                this.style.opacity = '0';
+                this.style.pointerEvents = 'none';
+                
+                // Show main content after fade completes
+                setTimeout(() => {
+                    this.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    
+                    // Refresh particles after content is visible
+                    if (window.pJSDom && window.pJSDom.length > 0) {
+                        window.pJSDom[0].pJS.fn.vendors.refresh();
+                    }
+                }, 1000);
+            });
 
             // Show music player after delay
             setTimeout(() => {
@@ -1403,9 +1705,6 @@
 
             // Toggle playback
             musicPlayer.addEventListener('click', function(e) {
-                // Ignore clicks on volume control
-                if (e.target === volumeControl || e.target === volumeLevel) return;
-                
                 if (musicPlaying) {
                     backgroundMusic.pause();
                 } else {
@@ -1417,21 +1716,6 @@
                 setTimeout(() => {
                     this.classList.remove('animate__animated', 'animate__pulse');
                 }, 1000);
-            });
-
-            // Double click for volume control
-            musicPlayer.addEventListener('dblclick', function(e) {
-                e.preventDefault();
-                volumeControl.classList.toggle('active');
-            });
-
-            // Handle volume control
-            volumeControl.addEventListener('click', function(e) {
-                const rect = this.getBoundingClientRect();
-                const clickPosition = e.clientX - rect.left;
-                const percentage = Math.min(1, Math.max(0, clickPosition / rect.width));
-                backgroundMusic.volume = percentage;
-                volumeLevel.style.width = `${percentage * 100}%`;
             });
 
             // Update play/pause icon and progress
@@ -1458,6 +1742,101 @@
                     const percent = (backgroundMusic.currentTime / backgroundMusic.duration) * 100;
                     musicPlayer.style.setProperty('--progress', percent + '%');
                 }
+            }
+
+            // Initialize particles with interactive settings
+            function initParticles() {
+                particlesJS('particles-js', {
+                    particles: {
+                        number: {
+                            value: 80,
+                            density: {
+                                enable: true,
+                                value_area: 800
+                            }
+                        },
+                        color: {
+                            value: "#64ffda"
+                        },
+                        shape: {
+                            type: "circle",
+                            stroke: {
+                                width: 0,
+                                color: "#000000"
+                            },
+                            polygon: {
+                                nb_sides: 5
+                            }
+                        },
+                        opacity: {
+                            value: 0.5,
+                            random: true,
+                            anim: {
+                                enable: true,
+                                speed: 1,
+                                opacity_min: 0.1,
+                                sync: false
+                            }
+                        },
+                        size: {
+                            value: 3,
+                            random: true,
+                            anim: {
+                                enable: true,
+                                speed: 2,
+                                size_min: 0.1,
+                                sync: false
+                            }
+                        },
+                        line_linked: {
+                            enable: true,
+                            distance: 150,
+                            color: "#64ffda",
+                            opacity: 0.2,
+                            width: 1
+                        },
+                        move: {
+                            enable: true,
+                            speed: 1,
+                            direction: "none",
+                            random: true,
+                            straight: false,
+                            out_mode: "out",
+                            bounce: false,
+                            attract: {
+                                enable: true,
+                                rotateX: 600,
+                                rotateY: 1200
+                            }
+                        }
+                    },
+                    interactivity: {
+                        detect_on: "canvas",
+                        events: {
+                            onhover: {
+                                enable: true,
+                                mode: "grab"
+                            },
+                            onclick: {
+                                enable: true,
+                                mode: "push"
+                            },
+                            resize: true
+                        },
+                        modes: {
+                            grab: {
+                                distance: 140,
+                                line_linked: {
+                                    opacity: 0.5
+                                }
+                            },
+                            push: {
+                                particles_nb: 4
+                            }
+                        }
+                    },
+                    retina_detect: true
+                });
             }
 
             // Section title animation on scroll
